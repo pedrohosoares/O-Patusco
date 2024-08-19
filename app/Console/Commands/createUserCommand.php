@@ -32,7 +32,7 @@ class createUserCommand extends Command
         ->insert([
             [
                 'name'=>'teste1',
-                'email'=>'login1@gmail.com',
+                'email'=>'medico@gmail.com',
                 'password'=>Hash::make('password'),
                 'rule_id'=>3,
                 'email_verified_at' => now(),
@@ -40,7 +40,7 @@ class createUserCommand extends Command
             ],
             [
                 'name'=>'teste2',
-                'email'=>'login2@gmail.com',
+                'email'=>'recepcionista@gmail.com',
                 'password'=>Hash::make('password'),
                 'rule_id'=>2,
                 'email_verified_at' => now(),
@@ -48,7 +48,7 @@ class createUserCommand extends Command
             ],
             [
                 'name'=>'teste3',
-                'email'=>'login3@gmail.com',
+                'email'=>'cliente@gmail.com',
                 'password'=>Hash::make('password'),
                 'rule_id'=>1,
                 'email_verified_at' => now(),

@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Rule::factory(3)->sequence(
-            ['id' => 1],
-            ['id' => 2],
-            ['id' => 3],
+            ['id' => 1,'name_type'=>'cliente'],
+            ['id' => 2,'name_type'=>'recepcionista'],
+            ['id' => 3,'name_type'=>'medico'],
         )->create();
         User::factory(4)->create();
         Race::factory(10)->create();
