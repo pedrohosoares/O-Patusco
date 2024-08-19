@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'rule_id' => Rule::factory()
+            'rule_id' => fake()->randomElement([1,2,3])
         ];
     }
 
