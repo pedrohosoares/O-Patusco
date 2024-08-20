@@ -15,12 +15,12 @@ abstract class CrudAbstract
         $this->model = $model;
     }
 
-    public function index($request): object
+    public function index($request): ?object
     {
         return $this->model->paginate(env('PAGINATE',15));
     }
 
-    public function show($id): object
+    public function show($id): ?object
     {
         return $this->model->find($id);
     }

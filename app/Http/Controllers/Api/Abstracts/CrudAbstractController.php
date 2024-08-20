@@ -31,14 +31,6 @@ abstract class CrudAbstractController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -63,14 +55,6 @@ abstract class CrudAbstractController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
@@ -88,8 +72,7 @@ abstract class CrudAbstractController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->service->destroy($id);
-            return $this->successResponse('Deletado com sucesso!');
+            return $this->service->destroy($id);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage());
         }

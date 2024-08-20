@@ -15,7 +15,9 @@
 - 10 - Instale o npm
 - 11 - Rode o npm run prod
 
-O projeto possui interfaces, serviços, repositórios e policies.
+O projeto possui interfaces, serviços, repositórios, classes abstratas e policies. Tentei isolar cada entidade no controller e serviços para especificar bastante a responsabilidade de cada uma.
+
+Criei classes abstratas para os métodos não se repetirem também e só sobrescrevi elas colocando as permissões das policies.
 
 Ele usa o Laravel / Sanctum para autenticar requisições e gerar tokens.
 

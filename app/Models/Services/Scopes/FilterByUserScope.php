@@ -13,7 +13,7 @@ class FilterByUserScope implements Scope
     {
         $user = Auth::user();
         $rules = Rule::USER_TYPES;
-        if($user->rule_id == $rules['medico']){
+        if($user->rule->name_type == $rules['medico']){
             $builder->whereHas('doctor', function (Builder $query) use ($user) {
                 $query->where('users.id', $user->id);
             });

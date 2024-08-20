@@ -40,11 +40,12 @@ class AnimalService extends CrudAbstract
 
     public function store(array $data)
     {
-        if(Gate::denies('create',Animal::class))
-        {
-            return $this->errorResponse('Ação não permitida');
-        }
         return parent::store($data);
+    }
+
+    public function storeAndReturnData(array $data)
+    {
+        return $this->repository->storeAndReturnData($data);
     }
 
     public function update(int $id, array $data)

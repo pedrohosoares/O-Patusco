@@ -21,7 +21,7 @@ class SchedulePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Schedule $schedule): bool
+    public function view(User $user): bool
     {
         return (($user->rule->name_type == Rule::USER_TYPES['recepcionista']) || $user->rule->name_type == Rule::USER_TYPES['medico']);
     }
@@ -31,13 +31,13 @@ class SchedulePolicy
      */
     public function create(User $user): bool
     {
-        return ($user->rule->name_type == Rule::USER_TYPES['recepcionista'] || $user->rule->name_type == Rule::USER_TYPES['cliente']);
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Schedule $schedule): bool
+    public function update(User $user): bool
     {
         return (($user->rule->name_type == Rule::USER_TYPES['recepcionista']) || $user->rule->name_type == Rule::USER_TYPES['medico']);
     }
@@ -45,7 +45,7 @@ class SchedulePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Schedule $schedule): bool
+    public function delete(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }
@@ -53,7 +53,7 @@ class SchedulePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Schedule $schedule): bool
+    public function restore(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }
@@ -61,7 +61,7 @@ class SchedulePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Schedule $schedule): bool
+    public function forceDelete(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }

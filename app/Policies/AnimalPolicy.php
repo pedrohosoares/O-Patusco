@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Animals\Animal;
 use App\Models\Users\Rule;
 use App\Models\Users\User;
-use Illuminate\Auth\Access\Response;
 
 class AnimalPolicy
 {
@@ -29,9 +28,9 @@ class AnimalPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(): bool
     {
-        return (($user->rule->name_type == Rule::USER_TYPES['recepcionista']) || $user->rule->name_type == Rule::USER_TYPES['cliente']);
+        return true;
     }
 
     /**

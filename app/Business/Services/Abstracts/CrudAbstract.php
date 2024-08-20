@@ -2,12 +2,13 @@
 
 namespace App\Business\Services\Abstracts;
 
+use App\Traits\HttpResponseTrait;
 use App\Traits\LogsTrait;
 
 abstract class CrudAbstract
 {
 
-    use LogsTrait;
+    use LogsTrait,HttpResponseTrait;
 
     protected $repository;
 
@@ -28,7 +29,7 @@ abstract class CrudAbstract
     public function show(int $id)
     {
         try {
-            return $this->repository->show($id);
+            return $this->successResponse($this->repository->show($id));
         } catch (\Throwable $th) {
             $this->log($th->getMessage());
         }
@@ -37,7 +38,7 @@ abstract class CrudAbstract
     public function store(array $data)
     {
         try {
-            return $this->repository->store($data);
+            return $this->successResponse($this->repository->store($data));
         } catch (\Throwable $th) {
             $this->log($th->getMessage());
         }
@@ -46,7 +47,7 @@ abstract class CrudAbstract
     public function update(int $id,array $data)
     {
         try {
-            return $this->repository->update($id,$data);
+            return $this->successResponse($this->repository->update($id,$data));
         } catch (\Throwable $th) {
             $this->log($th->getMessage());
         }
@@ -55,7 +56,7 @@ abstract class CrudAbstract
     public function destroy(int $id)
     {
         try {
-            return $this->repository->destroy($id);
+            return $this->successResponse($this->repository->destroy($id));
         } catch (\Throwable $th) {
             $this->log($th->getMessage());
         }

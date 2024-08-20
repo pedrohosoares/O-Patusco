@@ -17,7 +17,7 @@ class ScheduleRepository extends CrudAbstract implements ReadableInterface,Writa
         $this->model = $model;
     }
 
-    public function index($request): object
+    public function index($request): ?object
     {
         $date_start = $request['date_start'] ?? null;
         $date_end = $request['date_end'] ?? null;
@@ -36,7 +36,7 @@ class ScheduleRepository extends CrudAbstract implements ReadableInterface,Writa
         }
         if($race)
         {
-            $this->model = $this->model->whereHas('order.animal',function($query) use ($race){
+            $this->model = $this->model->whereHas('order.animal.race',function($query) use ($race){
                 return $query->where('name','like',"{$race}%");
             });
         }
@@ -44,7 +44,7 @@ class ScheduleRepository extends CrudAbstract implements ReadableInterface,Writa
         return $model;
     }
 
-    public function show($id): object
+    public function show($id): ?object
     {
         return $this->model->with([
             'doctor',
@@ -53,6 +53,11 @@ class ScheduleRepository extends CrudAbstract implements ReadableInterface,Writa
             'order.animal.race',
             'order.client'
         ])->find($id);
+    }
+
+    public function getSpecific(int $id)
+    {
+        return $this->model->find($id);
     }
 
 }

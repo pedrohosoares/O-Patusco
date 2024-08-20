@@ -18,11 +18,11 @@ class ClientService
         $this->service = $service;
     }
 
-    public function storeOrder(array $data)
+    public function store(array $data)
     {
         try {
-            $data['user']['rule_id'] = Rule::USER_TYPES['cliente'];
-            return $this->service->store($data)->toArray();
+            $data['user']['rule_id'] = Rule::USER_TYPES_ID['cliente'];
+            return $this->successResponse($this->service->store($data)->toArray());
         } catch (\Throwable $th) {
             $this->log($th->getMessage());
         }

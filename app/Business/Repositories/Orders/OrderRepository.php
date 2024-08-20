@@ -21,5 +21,10 @@ class OrderRepository extends CrudAbstract implements ReadableInterface,Writable
         return $this->model->with(['client','animal','animal.race'])->find($id);
     }
 
+    public function storeAndReturnData(array $data)
+    {
+        return $this->model->create($data);
+    }
+
 
 }

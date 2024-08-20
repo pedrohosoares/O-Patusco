@@ -23,4 +23,9 @@ class UserRepository extends CrudAbstract implements ReadableInterface,WritableI
         return $this->model->with('rule')->find($id);
     }
 
+    public function getAllDoctors(): object
+    {
+        return $this->model->getAllDoctors()->paginate(env('PAGINATE',15));
+    }
+
 }

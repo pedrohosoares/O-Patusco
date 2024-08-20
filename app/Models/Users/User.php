@@ -49,6 +49,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function scopeGetAllDoctors(object $query): object
+    {
+        return $query->whereHas('rule',function($query){
+            $query->where('rules.name_type',Rule::USER_TYPES['medico']);
+        });
+    }
+
     public function rule(): BelongsTo
     {
         return $this->belongsTo(Rule::class);

@@ -42,34 +42,53 @@ class ScheduleService extends CrudAbstract
 
     public function show(int $id)
     {
-        if (Gate::denies('view', Schedule::class)) {
-            return $this->errorResponse('Ação não permitida');
+        try {        
+            if (Gate::denies('view', Schedule::class)) {
+                return $this->errorResponse('Ação não permitida');
+            }
+            return parent::show($id);
+        } catch (\Throwable $th) {
+            $this->log($th->getMessage());
+            return [$th->getMessage()];
         }
-        return parent::show($id);
+        
+    }
+
+    public function getSpecific(int $id)
+    {
+        return $this->repository->getSpecific($id);
     }
 
     public function update(int $id,array $data)
     {
-        if (Gate::denies('update', Schedule::class)) {
-            return $this->errorResponse('Ação não permitida');
+        try {
+            if (Gate::denies('update', Schedule::class)) {
+                return $this->errorResponse('Ação não permitida');
+            }
+            return parent::update($id,$data);
+        } catch (\Throwable $th) {
+            $this->log($th->getMessage());
+            return [$th->getMessage()];
         }
-        return parent::update($id,$data);
     }
     
     public function destroy(int $id)
     {
-        if (Gate::denies('delete', Schedule::class)) {
-            return $this->errorResponse('Ação não permitida');
+        try {
+            if (Gate::denies('delete', Schedule::class)) {
+                return $this->errorResponse('Ação não permitida');
+            }
+            return parent::destroy($id);
+        } catch (\Throwable $th) {
+            $this->log($th->getMessage());
+            return [$th->getMessage()];
         }
-        return parent::destroy($id);
+        
     }
 
     public function store(array $data)
-    {
+    {       
         try {
-            if(Gate::denies('create',Schedule::class)){
-                return $this->errorResponse('Ação não permitida');
-            }
             $user = $data['user'];
             $user['password'] = Hash::make(uniqid());
             $user = $this->userService->storeOrUpdate($user,'findByEmail','email');
@@ -78,11 +97,11 @@ class ScheduleService extends CrudAbstract
             $animal = $data['animal'];
             $animal['owner_id'] = $user->id;
             $animal['race_id'] = $race->id;
-            $animal = $this->animalService->store($animal);
+            $animal = $this->animalService->storeAndReturnData($animal);
             $order = $data['order'];
             $order['client_id'] = $user->id;
             $order['animal_id'] = $animal->id;
-            $order = $this->orderService->store($order);
+            $order = $this->orderService->storeAndReturnData($order);
             $schedule = $data['schedule'];
             $schedule['order_id'] = $order->id;
             return $this->repository->store($schedule);

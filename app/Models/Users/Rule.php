@@ -16,6 +16,12 @@ class Rule extends Model
         'cliente'=>'cliente'
     ];
 
+    public const USER_TYPES_ID = [
+        'medico'=>3,
+        'recepcionista'=>2,
+        'cliente'=>1
+    ];
+
     protected $fillable = [
         'name_type'
     ];

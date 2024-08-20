@@ -15,4 +15,9 @@ class OrderService extends CrudAbstract
         $this->repository = $repository;
     }
 
+    public function storeAndReturnData(array $data)
+    {
+        return $this->repository->storeAndReturnData($data);
+    }
+
 }

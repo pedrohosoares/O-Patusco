@@ -26,7 +26,7 @@ class ScheduleController extends CrudAbstractController
     public function index(Request $request)
     {
         try {
-            return ScheduleResource::collection($this->service->index($request));
+            return $this->service->index($request);
         } catch (\Throwable $th) {
             return $this->errorResponse($th->getMessage());
         }

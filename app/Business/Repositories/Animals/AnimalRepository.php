@@ -24,4 +24,9 @@ class AnimalRepository extends CrudAbstract implements ReadableInterface,Writabl
         ])->find($id);
     }
 
+    public function storeAndReturnData(array $data)
+    {
+        return $this->model->create($data);
+    }
+
 }
