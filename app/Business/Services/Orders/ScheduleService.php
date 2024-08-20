@@ -6,6 +6,8 @@ use App\Business\Repositories\Orders\ScheduleRepository;
 use App\Business\Services\Abstracts\CrudAbstract;
 use App\Business\Services\Animals\AnimalService;
 use App\Business\Services\Animals\RaceService;
+use App\Business\Services\Users\ClientService;
+use App\Business\Services\Users\ReceptionService;
 use App\Business\Services\Users\UserService;
 use App\Http\Resources\ScheduleResource;
 use App\Models\Services\Schedule;
@@ -89,6 +91,7 @@ class ScheduleService extends CrudAbstract
     public function store(array $data)
     {       
         try {
+            
             $user = $data['user'];
             $user['password'] = Hash::make(uniqid());
             $user = $this->userService->storeOrUpdate($user,'findByEmail','email');
@@ -105,6 +108,40 @@ class ScheduleService extends CrudAbstract
             $schedule = $data['schedule'];
             $schedule['order_id'] = $order->id;
             return $this->repository->store($schedule);
+        } catch (\Throwable $th) {
+            $this->log($th->getMessage());
+            return [$th->getMessage()];
+        }
+    }
+
+    public function updateSchedule(array $data)
+    {
+        try {
+            if (Gate::denies('update', Schedule::class)) {
+                return $this->errorResponse('Ação não permitida');
+            }
+            $schedule = $this->repository->getSpecific($data['id']);
+            $doctor = $schedule->doctor;
+            $order = $schedule->order;
+            $client = $order->client;
+            $animal = $order->animal;
+            if(isset($data['animal']) and !empty($data['animal'])){
+                $this->animalService->update($animal->id,$data['animal']);
+            }
+            if(isset($data['client']) and !empty($data['client'])){
+                $this->userService->update($client->id,$data['client']);
+            }
+            if(isset($data['order']) and !empty($data['order'])){
+                $this->orderService->update($order->id,$data['order']);
+            }
+            if(isset($data['doctor']['id']) and !empty($data['doctor']['id'])){
+                $schedule->doctor()->detach($data['doctor']['id']);
+                $schedule->doctor()->attach($data['doctor']['id']);
+            }
+            if(isset($data['schedule']) and !empty($data['schedule'])){
+                $schedule = $this->repository->update($data['id'],$data['schedule']);
+            }
+            return $this->successResponse('Atualizado com sucesso');
         } catch (\Throwable $th) {
             $this->log($th->getMessage());
             return [$th->getMessage()];

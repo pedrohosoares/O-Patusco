@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -39,6 +40,42 @@ class DoctorTest extends TestCase
         $this->assertArrayHasKey('meta', $jsonResponse);
         $this->assertArrayHasKey('links', $jsonResponse);
         $response->assertStatus(200);
+    }
+
+    //php artisan test --filter=test_update_schedule_by_doctor
+    public function test_update_schedule_by_doctor(): void
+    {
+        $schedule = DB::table('schedules')->first();
+        $doctor_id = Auth::user()->id;
+        DB::table('schedule_doctor')->insert([['user_id'=>$doctor_id,'schedule_id'=>$schedule->id]]);
+        $data = [
+            'user'=>[
+                'name'=>fake()->name(),
+                'email'=>fake()->email(),
+            ],
+            'animal'=>[
+                'name'=>fake()->name(),
+                'birthday'=>fake()->date(),
+            ],
+            'race'=>[
+                'name'=>fake()->name(),
+            ],
+            'order'=>[
+                'symptoms'=>fake()->text(),
+            ],
+            'schedule'=>[
+                'date'=>fake()->date(),
+                'time'=>fake()->randomElement(['am','pm'])
+            ],
+            'doctor'=>[
+                'id'=>$doctor_id
+            ]
+        ];
+        $response = $this->put("/api/doctors/schedules/{$schedule->id}", $data, [
+            'Authorization' => 'Bearer ' . $this->token
+        ]);
+        $response->assertStatus(200);
+        $response->assertJson(['success'=>true]);
     }
 
     //php artisan test --filter=test_get_schedule_doctor

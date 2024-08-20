@@ -99,6 +99,38 @@ class RecepcionistaTest extends TestCase
         $this->assertNotEmpty($jsonResponse['data']);
     }
 
+    //php artisan test --filter=test_update_schedule
+    public function test_update_schedule(): void
+    {
+        $schedule = DB::table('schedules')->first();
+        $doctor = DB::table('users')->where('rule_id',3)->first();
+        $response = $this->put("/api/receptionists/schedules/update/{$schedule->id}",[
+            'user'=>[
+                'name'=>fake()->name(),
+                'email'=>fake()->email(),
+            ],
+            'animal'=>[
+                'name'=>fake()->name(),
+                'birthday'=>fake()->date(),
+            ],
+            'race'=>[
+                'name'=>fake()->name(),
+            ],
+            'order'=>[
+                'symptoms'=>fake()->text(),
+            ],
+            'schedule'=>[
+                'date'=>fake()->date(),
+                'time'=>fake()->randomElement(['am','pm'])
+            ],
+            'doctor'=>[
+                'id'=>$doctor->id
+            ]
+        ],['Authorization' => 'Bearer ' . $this->token]);
+        $response->assertStatus(200);
+        $response->assertJson(['success'=>true]);
+    }
+
     //php artisan test --filter=test_join_doctor_to_schedule
     public function test_join_doctor_to_schedule(): void
     {

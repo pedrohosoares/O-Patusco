@@ -36,7 +36,7 @@ class AnimalPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Animal $animal): bool
+    public function update(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }
@@ -44,7 +44,7 @@ class AnimalPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Animal $animal): bool
+    public function delete(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }
@@ -52,7 +52,7 @@ class AnimalPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Animal $animal): bool
+    public function restore(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }
@@ -60,7 +60,7 @@ class AnimalPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Animal $animal): bool
+    public function forceDelete(User $user): bool
     {
         return $user->rule->name_type == Rule::USER_TYPES['recepcionista'];
     }
