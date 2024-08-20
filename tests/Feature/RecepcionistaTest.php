@@ -26,9 +26,22 @@ class RecepcionistaTest extends TestCase
         $this->token = $jsonResponse['data']['token']; 
     }
 
-    /**
-     * A basic feature test example.
-     */
+    //php artisan test --filter=test_list_schedula_recpcionista_with_parameters
+    public function test_list_schedula_recpcionista_with_parameters(): void
+    {
+        $schedule_with_date = DB::table('schedules')->first();
+        $schedule_with_date = explode(' ',$schedule_with_date->date)[0];
+        $response = $this->get("/api/receptionists/schedules?date_start={$schedule_with_date}&date_end={$schedule_with_date}",[
+            'Authorization' => 'Bearer ' . $this->token,
+        ]);
+        $jsonResponse = $response->json();
+        $this->assertArrayHasKey('data', $jsonResponse);
+        $this->assertArrayHasKey('id', $jsonResponse['data'][0]);
+        $this->assertArrayHasKey('meta', $jsonResponse);
+        $this->assertArrayHasKey('links', $jsonResponse);
+        $response->assertStatus(200);
+    }
+
     //php artisan test --filter=test_list_schedula_recpcionista
     public function test_list_schedula_recpcionista(): void
     {
@@ -79,10 +92,68 @@ class RecepcionistaTest extends TestCase
                 'time'=>fake()->randomElement(['am','pm'])
             ]
         ],['Authorization' => 'Bearer ' . $this->token]);
-        dd($response->json());
         $response->assertStatus(200);
         $response->assertJson(['success'=>true]);
-        //$this->assertArrayHasKey('token', $jsonResponse['data']);
-        //$this->assertNotEmpty($jsonResponse['data']['token']);
+        $jsonResponse = $response->json();
+        $this->assertArrayHasKey('id', $jsonResponse['data']);
+        $this->assertNotEmpty($jsonResponse['data']);
+    }
+
+    //php artisan test --filter=test_join_doctor_to_schedule
+    public function test_join_doctor_to_schedule(): void
+    {
+        $doctorID = DB::table('users')->where('rule_id',3)->first();
+        $scheduleID = DB::table('schedules')->first();
+        $scheduleID = $scheduleID->id;
+        $doctorID = $doctorID->id;
+        $response = $this->post("/api/receptionists/schedules/join_doctor/{$scheduleID}/{$doctorID}",[],['Authorization' => 'Bearer ' . $this->token]);
+        $response->assertStatus(200);
+        $response->assertJson(['success'=>true]);
+    }
+
+    //php artisan test --filter=test_remove_doctor_to_schedule
+    public function test_remove_doctor_to_schedule(): void
+    {
+        $doctorID = DB::table('users')->where('rule_id',3)->first();
+        $scheduleID = DB::table('schedules')->first();
+        $scheduleID = $scheduleID->id;
+        $doctorID = $doctorID->id;
+        $response = $this->post("/api/receptionists/schedules/remove_doctor/{$scheduleID}/{$doctorID}",[],['Authorization' => 'Bearer ' . $this->token]);
+        $response->assertStatus(200);
+        $response->assertJson(['success'=>true]);
+    }
+
+    //php artisan test --filter=test_show_schedule
+    public function test_show_schedule(): void
+    {
+        $scheduleID = DB::table('schedules')->first();
+        $scheduleID = $scheduleID->id;
+        $response = $this->get("/api/receptionists/schedules/show/{$scheduleID}",[],['Authorization' => 'Bearer ' . $this->token]);
+        $response->assertStatus(200);
+        $response->assertJson(['success'=>true]);
+        $jsonResponse = $response->json();
+        $this->assertArrayHasKey('id', $jsonResponse['data']);
+    }
+
+
+    //php artisan test --filter=test_delete_schedule
+    public function test_delete_schedule(): void
+    {
+        $scheduleID = DB::table('schedules')->first();
+        $scheduleID = $scheduleID->id;
+        $response = $this->delete("/api/receptionists/schedules/{$scheduleID}",[],['Authorization' => 'Bearer ' . $this->token]);
+        $response->assertStatus(200);
+        $response->assertJson(['success'=>true]);
+        $response->assertJson(['data'=>true]);
+    }
+
+    //php artisan test --filter=test_show_doctors
+    public function test_show_doctors(): void
+    {
+        $response = $this->get("/api/doctors",[],['Authorization' => 'Bearer ' . $this->token]);
+        $response->assertStatus(200);
+        $jsonResponse = $response->json();
+        $this->assertArrayHasKey('current_page', $jsonResponse);
+        $this->assertNotEmpty($jsonResponse['data']);
     }
 }

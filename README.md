@@ -36,33 +36,56 @@ cliente@gmail.com - Para o utente
 Você pode usar eles para fazer o login e averiguar as permissões.
 
 
+## Testes
+
+Rode os testes com o comando 'php artisan test'
+
+## Comandos 
+
+Rode o comando php artisan migrate, php artisan db:seed e php artisan insert:users
+
 # Endpoints:
 
-**POST** /api/login -> Faz o login na aplicação
+**GET** /sanctum/csrf-cookie -> Prepara o login
+
+**POST** /api/login -> Faz o login na aplicação com os campos email e password
+
+**POST** /api/logout -> Faz logout
 
 ## Para médicos e recepcionistas:
 
-**GET** /api/receptionists/schedules 
+**GET** /api/receptionists/schedules -> Aceita parametros como race, date_start e date_end
 
-**GET** /api/receptionists/schedules/show/{id}
+**GET** /api/receptionists/schedules/show/{schedule_id}
 
-**DELETE** /api/receptionists/schedules/{id}
+**DELETE** /api/receptionists/schedules/{schedule_id}
 
-**POST** /api/receptionists/schedules/store
+**POST** /api/receptionists/schedules/store -> dados usados abaixo:
 
-**PUT** /receptionists/schedules/update/{id}
+- user[name]
+- user[email]
+- animal[name]
+- animal[birthday]
+- race[name]
+- order[symptoms]
+- schedule[date]
+- schedule[time]
 
-**POST** /receptionists/schedules/join_doctor/{schedule_id}/{doctor_id}
+**PUT** /receptionists/schedules/update/{schedule_id} -> Atualiza a agenda
 
-**POST** /receptionists/schedules/remove_doctor/{schedule_id}/{doctor_id}
+**POST** /receptionists/schedules/join_doctor/{schedule_id}/{doctor_id} -> Adiciona um médico a uma agenda
+
+**POST** /receptionists/schedules/remove_doctor/{schedule_id}/{doctor_id} -> Remove um médico de uma agenda
+
+**GET** /api/doctors/schedules -> Recupera todos os médicos
 
 ## Médico
 
-**GET** /api/doctors/schedules
+**GET** /api/doctors/schedules -> Visualiza a agenda de um médico
 
-**PUT** /api/doctors/schedules/{id}
+**PUT** /api/doctors/schedules/{id} -> Atualiza uma agenda especifica
 
-**GET** /doctors/schedules/show/{id}
+**GET** /doctors/schedules/show/{id} -> Visualiza uma agenda especifica
 
 
 

@@ -4,12 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class InsertNewScheduleTest extends TestCase
+class UtenteTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    //php artisan test --filter=InsertNewScheduleTest
+    //php artisan test --filter=test_insert_new_schedule
     public function test_insert_new_schedule(): void
     {
         $response = $this->post('/api/clients/orders',[
