@@ -1,6 +1,11 @@
 
 # O Patusco
 
+Projeto realizado para uma clínica veteninária chamada O Patusco. O mesmo foi feito com policies, classes abstratas e interfaces.
+Espero que cause uma boa impressão em vocês, qualquer dúvida, vamos discutir sobre o projeto.
+
+O mesmo esta configurado para usar o vite e o Vuetify, porém, ainda estou a aprender o Vuetify, por isso, vou ir atualizando o mesmo aos poucos.
+
 # Para instalar
 - 1 - Instale o composer
 - 2 - Na pasta do projeto, rode o comando: composer install
@@ -38,7 +43,7 @@ Você pode usar eles para fazer o login e averiguar as permissões.
 
 ## Testes
 
-Rode os testes com o comando 'php artisan test'
+Rode os testes, rode o **php artisan migrate** **php artisan db:seed** e finalmente **php artisan test**
 
 ## Comandos 
 
@@ -73,6 +78,16 @@ Rode o comando php artisan migrate, php artisan db:seed e php artisan insert:use
 
 **PUT** /receptionists/schedules/update/{schedule_id} -> Atualiza a agenda
 
+- user[name]
+- user[email]
+- animal[name]
+- animal[birthday]
+- race[name]
+- order[symptoms]
+- schedule[date]
+- schedule[time]
+- doctor[id]
+
 **POST** /receptionists/schedules/join_doctor/{schedule_id}/{doctor_id} -> Adiciona um médico a uma agenda
 
 **POST** /receptionists/schedules/remove_doctor/{schedule_id}/{doctor_id} -> Remove um médico de uma agenda
@@ -84,6 +99,16 @@ Rode o comando php artisan migrate, php artisan db:seed e php artisan insert:use
 **GET** /api/doctors/schedules -> Visualiza a agenda de um médico
 
 **PUT** /api/doctors/schedules/{id} -> Atualiza uma agenda especifica
+
+- user[name]
+- user[email]
+- animal[name]
+- animal[birthday]
+- race[name]
+- order[symptoms]
+- schedule[date]
+- schedule[time]
+- doctor[id]
 
 **GET** /doctors/schedules/show/{id} -> Visualiza uma agenda especifica
 
